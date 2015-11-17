@@ -1,6 +1,6 @@
 module.exports = find;
 
-function find(tree) {
+function find(tree, stripQueryString) {
     if (tree.stylesheet) {
         return find(tree.stylesheet);
     }
@@ -14,8 +14,11 @@ function find(tree) {
                 m;
             while ((m = pattern.exec(d.value)) !== null) {
                 var url = m[1]
-                    .replace(/^['"]|['"]$/g, '')
-                    .replace(/[?#].*$/, '');
+                    .replace(/^['"]|['"]$/g, '');
+
+                if (stripQueryString) {
+                    url = url.replace(/[?#].*$/, '');
+                }
 
                 assets.push({
                     url: url,
